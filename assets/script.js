@@ -46,3 +46,28 @@ rightArrow.addEventListener('click', function() {
 	updateDots();
 });
 
+
+for (let i = 0; i < slides.length; i++) {
+	const newDot = document.createElement('div');
+	newDot.classList = 'dot';
+	dots.appendChild(newDot);
+	newDot.addEventListener('click', function() {
+		positionSlide = i;
+		img.src = slides[positionSlide].image;
+		txt.innerHTML = slides[positionSlide].tagLine;
+		updateDots();
+	});
+}
+
+let dot = document.querySelectorAll('.dot');
+dot[0].classList.add('dot_selected');
+
+function updateDots() {
+	for (let i = 0; i < dot.length; i++) {
+		if (i === positionSlide) {
+			dot[i].classList.add('dot_selected');
+		} else {
+			dot[i].classList.remove('dot_selected');
+		}
+	}
+}
