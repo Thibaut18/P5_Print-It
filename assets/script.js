@@ -46,7 +46,6 @@ rightArrow.addEventListener('click', function() {
 	updateDots();
 });
 
-
 for (let i = 0; i < slides.length; i++) {
 	const newDot = document.createElement('div');
 	newDot.classList = 'dot';
