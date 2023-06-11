@@ -1,3 +1,7 @@
+/**
+ * Tableau de diapositives définissant toutes les propriétés des diapositives.
+ * @type {Array.<{image: string, tagLine: string}>}
+ */
 const slides = [
 	{
 		"image":"./assets/images/slideshow/slide1.jpg",
@@ -17,56 +21,86 @@ const slides = [
 	}
 ];
 
-const leftArrow = document.querySelector('.arrow_left');
-const rightArrow = document.querySelector('.arrow_right');
-const dots = document.querySelector('.dots');
-const img = document.querySelector('.banner-img');
-let positionSlide = 0;
-const txt = document.querySelector('.banner-txt');
+/**
+ * Éléments DOM utilisés dans la navigation des diapositives.
+ */
+const $leftArrow = document.querySelector('.arrow_left');
+const $rightArrow = document.querySelector('.arrow_right');
+const $dotsContainer = document.querySelector('.dots');
+const $img = document.querySelector('.banner-img');
+const $txt = document.querySelector('.banner-txt');
 
-leftArrow.addEventListener('click', function() {
+/**
+ * Index de la diapositive actuelle.
+ * @type {number}
+ */
+let positionSlide = 0;
+
+/**
+ * Met à jour l'état des points qui indiquent la diapositive actuelle.
+ * @param {NodeListOf<HTMLElement>} dotsList - La liste des éléments point.
+ * @param {number} activeDotIndex - L'index du point actuellement actif.
+ */
+function updateDots(dotsList, activeDotIndex) {
+	for (let i = 0; i < dotsList.length; i++) {
+		if (i === activeDotIndex) {
+			dotsList[i].classList.add('dot_selected');
+		} else {
+			dotsList[i].classList.remove('dot_selected');
+		}
+	}
+}
+
+/**
+ * Passe à la diapositive précédente.
+ */
+$leftArrow.addEventListener('click', function() {
 	positionSlide--;
 	if (positionSlide === -1) {
 		positionSlide = slides.length - 1;
 	}
-	img.src = slides[positionSlide].image;
-	txt.innerHTML = slides[positionSlide].tagLine;
-	console.log('On clique sur la flèche de gauche');
-	updateDots();
+	$img.src = slides[positionSlide].image;
+	$txt.innerHTML = slides[positionSlide].tagLine;
+	updateDots(dots, positionSlide);
 });
 
-rightArrow.addEventListener('click', function() {
+/**
+ * Passe à la diapositive suivante.
+ */
+$rightArrow.addEventListener('click', function() {
 	positionSlide++;
 	if (positionSlide === slides.length) {
 		positionSlide = 0;
 	}
-	img.src = slides[positionSlide].image;
-	txt.innerHTML = slides[positionSlide].tagLine;
-	console.log('On clique sur la flèche de droite');
-	updateDots();
+	$img.src = slides[positionSlide].image;
+	$txt.innerHTML = slides[positionSlide].tagLine;
+	updateDots(dots, positionSlide);
 });
 
+/**
+ * Crée des points pour chaque diapositive et les ajoute au conteneur.
+ */
 for (let i = 0; i < slides.length; i++) {
 	const newDot = document.createElement('div');
 	newDot.classList = 'dot';
-	dots.appendChild(newDot);
+	$dotsContainer.appendChild(newDot);
 	newDot.addEventListener('click', function() {
 		positionSlide = i;
-		img.src = slides[positionSlide].image;
-		txt.innerHTML = slides[positionSlide].tagLine;
-		updateDots();
+		$img.src = slides[positionSlide].image;
+		$txt.innerHTML = slides[positionSlide].tagLine;
+		updateDots(dots, positionSlide);
 	});
 }
 
-let dot = document.querySelectorAll('.dot');
-dot[0].classList.add('dot_selected');
+/**
+ * Tous les points dans le diaporama.
+ * @type {NodeListOf<HTMLElement>}
+ */
+let dots = document.querySelectorAll('.dot');
 
-function updateDots() {
-	for (let i = 0; i < dot.length; i++) {
-		if (i === positionSlide) {
-			dot[i].classList.add('dot_selected');
-		} else {
-			dot[i].classList.remove('dot_selected');
-		}
-	}
-}
+// Marque le premier point comme sélectionné au début.
+dots[0].classList.add('dot_selected');
+
+
+
+
